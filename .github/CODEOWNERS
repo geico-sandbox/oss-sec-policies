@@ -1,0 +1,5 @@
+# Global codeowners for this repo:
+* @YOuoba_geico @APolisetti_geico @richardlucas_geico
+
+# Manager has exclusive right to edit this file:
+/.github/CODEOWNERS @YOuoba_geico

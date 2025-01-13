@@ -1,0 +1,24 @@
+# Workflow for enforcing Open Source Security Policy
+
+name: Open Source Security Policy Enforcement
+
+permissions:
+  contents: read
+  pull-requests: read
+
+on:
+  pull_request_target:
+    types: [opened, edited, reopened, synchronize] # these triggers are ignored for "ruleset workflows"
+
+jobs:
+  trufflehog:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Secret Scanning
+      uses: trufflesecurity/trufflehog@main
+      with:
+        extra_args: --results=verified,unknown
