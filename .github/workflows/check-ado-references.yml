@@ -1,0 +1,23 @@
+name: Check ADO References
+
+permissions:
+  contents: read
+  pull-requests: read
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+
+jobs:
+  check-ado-references:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run check-ado-references.ps1
+        run: ./.github/workflows/scripts/check-ado-references.ps1
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
