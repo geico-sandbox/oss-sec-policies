@@ -1,12 +1,14 @@
-# Define the patterns to search for
+# internal artifactory patterns
 $patterns = @("packageregistry-np.geico.net", "packageregistry.geico.net", "artifactory-pd-infra.aks.aze1.cloud.geico.net")
-
-# Initialize a flag to track if any references are found
 $found = $false
+
+# Get the path of the current script
+$currentScript = $MyInvocation.MyCommand.Path
+
 
 # Loop through each pattern and search the codebase
 foreach ($pattern in $patterns) {
-    $results = Get-ChildItem -Recurse -File | Select-String -Pattern $pattern
+    $results = Get-ChildItem -Recurse -File | Where-Object { $_.FullName -ne $currentScript } | Select-String -Pattern $pattern
     if ($results) {
         Write-Output "Found reference to internal package management system: $pattern"
         $found = $true
