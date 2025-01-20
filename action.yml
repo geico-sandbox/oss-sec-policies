@@ -1,0 +1,9 @@
+name: Check ADO References
+description: This action checks for references to ADO work items in pull request titles, descriptions, and comments.
+inputs:
+  github-token:
+    description: "GitHub token to use for authentication"
+    required: true
+runs:
+  using: "node12"
+  main: "lib/index.js"
