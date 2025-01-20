@@ -2,7 +2,6 @@ import * as core from '@actions/core';
 import * as github from '@actions/github';
 import * as glob from 'glob';
 import * as fs from 'fs';
-import * as path from 'path';
 
 
 async function run() {
