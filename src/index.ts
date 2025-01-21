@@ -2,6 +2,8 @@ import * as core from '@actions/core';
 import * as github from '@actions/github';
 import * as glob from 'glob';
 import * as fs from 'fs';
+import * as path from 'path';
+
 
 
 async function run() {
@@ -15,13 +17,18 @@ async function run() {
         const { context } = github;
         const prNumber = context.payload.pull_request?.number;
 
+        const configPath = path.resolve(__dirname, '../config/config.json');
+        const configFile = fs.readFileSync(configPath, 'utf-8');
+        const config = JSON.parse(configFile);
+
+
         if (!prNumber) {
             core.setFailed('No pull request number found.');
             return;
         }
 
-        const adoPatterns = ["https://dev.azure.com/", "AB#"];
-        const internalPatterns = ["packageregistry-np.geico.net", "packageregistry.geico.net", "artifactory-pd-infra.aks.aze1.cloud.geico.net"];
+        const adoPatterns = config.adoPatterns;
+        const internalPatterns = config.internalPatterns;
         let found = false;
 
         // Function to check ADO references
@@ -69,8 +76,8 @@ async function run() {
         const checkInternalReferences = async () => {
             const files = glob.sync('**/*', { nodir: true, ignore: ['node_modules/**', '.git/**'] });
             for (const file of files) {
-                if (file == "src/index.ts" || file == "lib/index.js") {
-                    continue
+                if (path.resolve(file) === configPath) {
+                    continue;
                 }
                 const content = fs.readFileSync(file, 'utf8');
                 for (const pattern of internalPatterns) {
