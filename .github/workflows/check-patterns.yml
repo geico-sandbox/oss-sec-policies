@@ -29,3 +29,5 @@ jobs:
 
       - name: Run check-patterns script
         run: node lib/index.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
