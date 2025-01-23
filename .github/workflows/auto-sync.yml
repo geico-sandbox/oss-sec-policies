@@ -1,8 +1,8 @@
 name: Sync Fork
 
 on:
-  schedule:
-    - cron: '*/30 * * * *' # every 30 minutes
+  # schedule:
+  #   - cron: '*/30 * * * *' # every 30 minutes
   workflow_dispatch: # on button click
 
 jobs:
@@ -15,9 +15,10 @@ jobs:
         id: get_repos
         with:
           script: |
-            const repos = await github.rest.repos.listForOrg({
+            const res = await github.rest.repos.listForOrg({
               context.repo.owner,
             })
+            const repos = res.data
             return repos.filter(repo => {
               if (repo.fork) {
                 return {
@@ -35,6 +36,6 @@ jobs:
     steps:
       - uses: tgymnich/fork-sync@v1.8
         with:
-          owner: ${{ matrix.parent }}
-          base: ${{ matrix.default_branch }}
-          head: ${{ matrix.default_branch }}
+          owner: ${{ matrix.repo.parent }}
+          base: ${{ matrix.repo.default_branch }}
+          head: ${{ matrix.repo.default_branch }}
