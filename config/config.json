@@ -1,0 +1,11 @@
+{
+    "adoPatterns": [
+        "https://dev.azure.com/geico",
+        "AB#"
+    ],
+    "internalPatterns": [
+        "packageregistry-np.geico.net",
+        "packageregistry.geico.net",
+        "artifactory-pd-infra.aks.aze1.cloud.geico.net"
+    ]
+}
